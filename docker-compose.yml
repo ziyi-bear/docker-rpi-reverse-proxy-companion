@@ -16,6 +16,8 @@ services:
     - /etc/nginx/vhost.d
     - /usr/share/nginx/html
     - /var/run/docker.sock:/tmp/docker.sock:ro
+    # 客製化ERROR CODE頁面
+    - ./html:/usr/share/nginx/html:rw
 
   letsencrypt-nginx-proxy-companion:
     container_name: proxy-companion
