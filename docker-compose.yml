@@ -1,19 +1,17 @@
 version: '2'
 services:
   nginx-proxy:
-    labels: 
+    labels:
     - com.github.jrcs.letsencrypt_nginx_proxy_companion.nginx_proxy
     container_name: nginx-proxy
-    image: budry/jwilder-nginx-proxy-arm
-    #image: jwilder/nginx-proxy
+    #image: budry/jwilder-nginx-proxy-arm
+    image: alexanderkrause/rpi-nginx-proxy
     restart: always
     expose:
       - 80
-      # 目前鏡像仍不支援
       - 443
     ports:
       - "80:80"
-      # 目前鏡像仍不支援
       - "443:443"
     network_mode: host
     volumes:
@@ -26,12 +24,14 @@ services:
 
   letsencrypt-nginx-proxy-companion:
     container_name: proxy-companion
-    image: jrcs/letsencrypt-nginx-proxy-companion
+    #image: jrcs/letsencrypt-nginx-proxy-companion
+    image: alexanderkrause/rpi-letsencrypt-nginx-proxy-companion
     depends_on:
       - nginx-proxy
     restart: always
+    network_mode: host
     volumes:
-      - ./certs:/etc/nginx/certs:rw 
-      - /var/run/docker.sock:/var/run/docker.sock:ro 
+      - ./certs:/etc/nginx/certs:rw
+      - /var/run/docker.sock:/var/run/docker.sock:ro
     volumes_from:
       - nginx-proxy
